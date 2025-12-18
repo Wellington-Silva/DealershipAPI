@@ -20,6 +20,7 @@ public class Dealership {
 
     private String name;
 
+    @Column(name = "shortaddress")
     private String shortAddress;
 
     private String email;
