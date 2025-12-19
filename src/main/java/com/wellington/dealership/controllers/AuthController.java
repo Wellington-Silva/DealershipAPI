@@ -6,6 +6,9 @@ import com.wellington.dealership.DTOs.ResponseDTO;
 import com.wellington.dealership.domains.Dealership;
 import com.wellington.dealership.infra.security.TokenService;
 import com.wellington.dealership.repositories.DealershipRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +28,11 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
+    @Operation(description = "Realiza login na concessionária")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login realizado"),
+            @ApiResponse(responseCode = "400", description = "Erro no login")
+    })
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody LoginRequestDTO body) {
         Dealership dealership = repository.findByEmail(body.email()).orElseThrow(() -> new RuntimeException("User not found"));
@@ -35,6 +43,11 @@ public class AuthController {
         return ResponseEntity.badRequest().build();
     }
 
+    @Operation(description = "Cadastra uma concessionária")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Concessionária cadastrada"),
+            @ApiResponse(responseCode = "400", description = "Erro ao cadastrar concessionária")
+    })
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody RegisterRequestDTO body) {
         Optional<Dealership> dealership = repository.findByEmail(body.email());
