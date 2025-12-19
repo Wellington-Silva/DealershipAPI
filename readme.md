@@ -40,7 +40,7 @@ API REST para gerenciamento de concessionárias e veículos usando **Spring Boot
 4. **Inicie a aplicação**
 
 ## 🏗️ Estrutura do Projeto
-
+```bash
 src/main/java/com/wellington/dealership/
 ├── DealershipApplication.java
 ├── controllers/
@@ -67,6 +67,7 @@ src/main/java/com/wellington/dealership/
 │ │ ├── SecurityConfig.java
 │ │ ├── SecurityFilter.java
 │ │ └── TokenService.java
+```
 
 ## 🛡️ Validações Implementadas
 
