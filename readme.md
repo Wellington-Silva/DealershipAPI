@@ -61,8 +61,8 @@ src/main/java/com/wellington/dealership/
 │ ├── RegisterRequestDTO.java
 │ ├── ResponseDTO.java
 │ └── UpdateRequestDTO.java
-└── infra
-│ ├── security
+└── infra/
+│ ├── security/
 │ │ ├── CustomUserDetailsService.java
 │ │ ├── SecurityConfig.java
 │ │ ├── SecurityFilter.java
