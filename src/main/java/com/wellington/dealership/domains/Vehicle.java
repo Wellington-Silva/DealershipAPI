@@ -25,4 +25,7 @@ public class Vehicle {
     private String plate;
 
     private Integer year;
+
+    @Column(name = "dealership_id", nullable = false)
+    private UUID dealershipId;
 }

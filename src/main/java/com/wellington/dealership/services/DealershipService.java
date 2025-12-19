@@ -28,7 +28,6 @@ public class DealershipService {
                 .map(dealership -> {
                     dealership.setName(data.name());
                     dealership.setShortAddress(data.shortAddress());
-                    dealership.setPassword(data.password());
                     return repository.save(dealership);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Dealership não encontrada"));

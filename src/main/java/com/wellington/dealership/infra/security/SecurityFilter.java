@@ -21,33 +21,53 @@ import java.util.Collections;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
+
     @Autowired
     TokenService tokenService;
+
     @Autowired
     DealershipRepository dealershipRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+        String authHeader = request.getHeader("Authorization");
 
-        String token = recoverToken(request);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
 
-        if (token != null && tokenService.validateToken(token) != null) {
+            String token = authHeader.substring(7);
             String login = tokenService.validateToken(token);
-            Dealership dealership = dealershipRepository.findByEmail(login).orElse(null);
-            if (dealership != null) {
-                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-                var authentication = new UsernamePasswordAuthenticationToken(dealership, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            if (login != null) {
+                Dealership dealership = dealershipRepository.findByEmail(login).orElse(null);
+                if (dealership != null) {
+                    var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+
+                    var userDetails = new org.springframework.security.core.userdetails.User(
+                            dealership.getEmail(),
+                            dealership.getPassword(),
+                            authorities
+                    );
+
+                    var authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null,
+                            userDetails.getAuthorities()
+                    );
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
-
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request){
+    private String recoverToken(HttpServletRequest request) {
         var authHeader = request.getHeader("Authorization");
-        if(authHeader == null) return null;
-        return authHeader.replace("Bearer ", "");
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) return null;
+        return authHeader.substring(7);
     }
 }
