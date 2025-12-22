@@ -1,9 +1,11 @@
 package com.wellington.dealership.services;
 
 import com.wellington.dealership.DTOs.CreateVehicleDTO;
+import com.wellington.dealership.DTOs.UpdateVehicleDTO;
 import com.wellington.dealership.domains.Vehicle;
 import com.wellington.dealership.repositories.DealershipRepository;
 import com.wellington.dealership.repositories.VehicleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +60,26 @@ public class VehicleService {
         newVehicle.setDealershipId(data.dealershipId());  // ← Associa à concessionária
 
         return repository.save(newVehicle);
+    }
+
+    public Optional<Vehicle> updateVehicle(String plate, UpdateVehicleDTO data) {
+        return Optional.ofNullable(repository.findByPlate(plate)
+                .map(vehicle -> {
+                    vehicle.setName(data.name());
+                    vehicle.setPlate(data.plate());
+                    vehicle.setModel(data.model());
+                    vehicle.setYear(data.year());
+                    return repository.save(vehicle);
+                })
+                .orElseThrow(() -> new EntityNotFoundException("Veículo não encontrado")));
+    }
+
+    public void deleteVehicle(String plate) {
+        Optional<Vehicle> vehicle = repository.findByPlate(plate);
+        if (vehicle.isEmpty()) {
+            throw new IllegalArgumentException("Veículo não encontrado");
+        }
+        repository.deleteById(vehicle.get().getId());
     }
 
 }

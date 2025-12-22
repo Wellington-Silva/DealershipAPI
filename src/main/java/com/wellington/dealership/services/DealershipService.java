@@ -30,7 +30,7 @@ public class DealershipService {
                     dealership.setShortAddress(data.shortAddress());
                     return repository.save(dealership);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Dealership não encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException("Concessionária não encontrada"));
     }
 
     public ResponseEntity<Void> deleteDealership(@PathVariable UUID id) {

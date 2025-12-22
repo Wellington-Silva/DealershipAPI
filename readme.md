@@ -4,11 +4,10 @@ API REST para gerenciamento de concessionárias e veículos usando **Spring Boot
 
 ## ✨ Funcionalidades
 
-- **Autenticação**: Login com JWT
-- **Concessionárias**: CRUD completo
-- **Veículos**: Criação única por placa/concessionária, listagem por concessionária, detalhes por placa
-- **Validações**: Placa única por concessionária, concessionária existente
-- **Paginação**: Listagem de veículos otimizada
+- **Autenticação**: Login com JWT;
+- **Concessionárias**: CRUD completo;
+- **Veículos**: CRUD completo;
+- **Paginação**: Listagem de veículos otimizada;
 
 ## 🛠️ Tecnologias
 - Spring Boot 4.0.0
@@ -71,11 +70,11 @@ src/main/java/com/wellington/dealership/
 
 ## 🛡️ Validações Implementadas
 
-- ✅ Placa única por concessionária
-- ✅ Concessionária existe antes de associar veículo
-- ✅ Injeção de dependência por construtor
-- ✅ Tratamento de exceções customizadas
-- ✅ Paginação para listagens grandes
+- ✅ Placa única por concessionária;
+- ✅ Concessionária existe antes de associar veículo;
+- ✅ Injeção de dependência por construtor;
+- ✅ Tratamento de exceções customizadas;
+- ✅ Paginação para listagens grandes;
 
 ## 🤝 Contribuição
 

@@ -1,6 +1,7 @@
 package com.wellington.dealership.controllers;
 
 import com.wellington.dealership.DTOs.CreateVehicleDTO;
+import com.wellington.dealership.DTOs.UpdateVehicleDTO;
 import com.wellington.dealership.domains.Vehicle;
 import com.wellington.dealership.services.VehicleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -62,6 +64,32 @@ public class VehicleController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
+    }
+
+    @Operation(description = "Atualiza dados de um veículo associado a concessionária")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Veículo atualizado"),
+            @ApiResponse(responseCode = "400", description = "Veículo não atualizado")
+    })
+    @PutMapping("/update/vehicle/{plate}")
+    public ResponseEntity<?> updateVehicle(@PathVariable String plate, @RequestBody @Valid UpdateVehicleDTO data) {
+        try {
+            Optional<Vehicle> vehicle = this.service.updateVehicle(plate, data);
+            return ResponseEntity.status(HttpStatus.OK).body(vehicle);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @Operation(description = "Deleta um veículo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Deleta um veículo"),
+            @ApiResponse(responseCode = "400", description = "Erro ao deletar um veículo")
+    })
+    @DeleteMapping("/{plate}")
+    public ResponseEntity deleteVehicle(@PathVariable String plate) {
+        service.deleteVehicle(plate);
+        return ResponseEntity.ok("Veículo deletado com sucesso");
     }
 
 }
